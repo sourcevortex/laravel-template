@@ -18,16 +18,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return JsonResponse
-     */
-    public function create(): JsonResponse
-    {
-        return response()->json(['msg' => 'Not implemented yet'], 500);
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  Request  $request
@@ -45,17 +35,6 @@ class UserController extends Controller
      * @return JsonResponse
      */
     public function show($id): JsonResponse
-    {
-        return response()->json(['msg' => 'Not implemented yet'], 500);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return JsonResponse
-     */
-    public function edit($id): JsonResponse
     {
         return response()->json(['msg' => 'Not implemented yet'], 500);
     }

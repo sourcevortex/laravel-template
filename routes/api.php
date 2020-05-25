@@ -14,23 +14,25 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('v1')->group(function() {
-    /*
-    |--------------------------------------------------------------------------
-    | Public Routes
-    |--------------------------------------------------------------------------
-    |
-    */
-    Route::post('register', 'AuthController@register');
-    Route::post('login', 'AuthController@authenticate');
+    Route::middleware(['error.handler'])->group(function() {
+        /*
+        |--------------------------------------------------------------------------
+        | Public Routes
+        |--------------------------------------------------------------------------
+        |
+        */
+        Route::post('register', 'AuthController@register');
+        Route::post('login', 'AuthController@authenticate');
 
-    /*
-    |--------------------------------------------------------------------------
-    | Private Routes
-    |--------------------------------------------------------------------------
-    |
-    */
-    Route::middleware('jwt.verify')->group(function() {
-        Route::apiResource('users', 'UserController');
+        /*
+        |--------------------------------------------------------------------------
+        | Private Routes
+        |--------------------------------------------------------------------------
+        |
+        */
+        Route::middleware('jwt.verify')->group(function() {
+            Route::apiResource('users', 'UserController');
+        });
     });
 });
 

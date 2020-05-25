@@ -38,20 +38,21 @@ final class Responses
      * @param \Throwable $exception Complete expection object
      */
     public static function Error(
-        string $status = 'error',
-        int $code = 500,
+        \Throwable $exception,
         string $message = 'Unknow error, try again later.',
         string $devMessage = null,
-        \Throwable $exception
+        string $status = 'error',
+        int $code = 500
     ): JsonResponse
     {
-        return response()->json([
+        $defaultResponse = [
             'status' => $status,
             'code' => $code,
             'userMessage' => $message,
-            'devMessage' => $devMessage,
             'exMessage' => $exception->getMessage(),
             'ex' => $exception,
-        ]);
+        ];
+        if ($devMessage) $defaultResponse['devMessage'] = $devMessage;
+        return response()->json($defaultResponse, $code);
     }
 }

@@ -35,11 +35,12 @@ final class Responses
      * @param int $code Http status code
      * @param string $message Descriptive message for users
      * @param string $devMessage Descriptive message for developers
-     * @param \Throwable $exception Complete expection object
+     * @param \Throwable $exception Complete exception object
+     * @return JsonResponse
      */
     public static function Error(
         \Throwable $exception,
-        string $message = 'Unknow error, try again later.',
+        string $message = 'Unknown error, try again later.',
         string $devMessage = null,
         string $status = 'error',
         int $code = 500

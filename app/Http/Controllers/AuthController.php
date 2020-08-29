@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Responses;
 use App\Models\User;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -17,20 +20,18 @@ class AuthController extends Controller
      * Auth user and generate JWT
      *
      * @param Request $request
+     * @return JsonResponse
+     * @throws Exception
      */
-    public function authenticate(Request $request)
+    public function authenticate(Request $request): JsonResponse
     {
         $credentials = $request->only('email', 'password');
 
-        try {
-            if (!$token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'invalid_credentials'], 400);
-            }
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'could_not_create_token'], 500);
+        if (!$token = JWTAuth::attempt($credentials)) {
+            throw new Exception('Email or password incorrect', 401);
         }
 
-        return response()->json(compact('token'));
+        return Responses::Success('Successful authentication', ['token' => $token]);
     }
 
     /**
@@ -48,7 +49,7 @@ class AuthController extends Controller
             ]);
 
             if ($validator->fails()) {
-                throw new \Exception($validator->errors()->toJson(), 400);
+                throw new Exception($validator->errors()->toJson(), 400);
             }
 
             $user = User::create([
@@ -60,7 +61,7 @@ class AuthController extends Controller
             $token = JWTAuth::fromUser($user);
 
             return response()->json(compact('user', 'token'), 201);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['msg' => 'Unknow error', 'devMsg' => $e->getMessage()], 500);
         }
     }
